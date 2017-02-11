@@ -41,7 +41,7 @@ Build flags can be passed to `extconf.rb` to specify the `caffe` path and other 
 - `--with-blas-include=<path>`: specify the path that contains the blas headers
 - `--with-blas-dir=<path>`: the same as `--with-blas-include=<path>/include`
 - `--enable-gpu` & `--disable-gpu`: specify GPU mode of caffe, enabled by default
-- `--enable-mkl` & `--disable-mkl`: specify if Intel MKL is used as blas library, if neither flags are set `exconf.rb` will search for `cblas.h` first and then `mkl.h` if fails
+- `--enable-mkl` & `--disable-mkl`: specify if Intel MKL is used as blas library, if neither flags are set `extconf.rb` will search for `cblas.h` first and then `mkl.h` if fails
 
 If `rake` is used to build the extension, use:
 
@@ -65,7 +65,7 @@ $ bundle install
 
 ### Put everything in search path ###
 
-If you put all the headers and libs required in default search path (like `/usr/local` & `/usr`), and uses the default setting (with GPU mode) then everything should be ok
+If you put all the headers and libs required in default search path (like `/usr/local` & `/usr`), and use the default setting (with GPU mode) then everything should be ok
 
 ## Build ##
 
