@@ -28,7 +28,16 @@ ensure
   MakeMakefile.rm_f "conftest*"
 end
 
+def trans_opt opt
+  [[:to_str], [:join, " "], [:to_s]].each do |meth, *args|
+    if opt.respond_to?(meth)
+      return opt.send(meth, *args)
+    end
+  end
+end
+
 def have_header_cxx(header, preheaders = nil, opt = "", &b)
+  opt = "#{trans_opt opt} #{trans_opt $defs}"
   checking_for header do
     if try_cxxpp(cpp_include(preheaders)+cpp_include(header), opt, &b)
       $defs.push(format("-DHAVE_%s", header.tr_cpp))
@@ -40,16 +49,7 @@ def have_header_cxx(header, preheaders = nil, opt = "", &b)
 end
 
 def try_library(libs, opt = "", &b)
-  if opt and !opt.empty?
-    [[:to_str], [:join, " "], [:to_s]].each do |meth, *args|
-      if opt.respond_to?(meth)
-        break opt = opt.send(meth, *args)
-      end
-    end
-    opt = "#{opt} #{libs}"
-  else
-    opt = libs
-  end
+  opt = "#{trans_opt opt} #{libs}"
   try_link(MAIN_DOES_NOTHING, opt, &b)
 end
 
