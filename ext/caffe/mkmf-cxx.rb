@@ -39,14 +39,28 @@ def have_header_cxx(header, preheaders = nil, opt = "", &b)
   end
 end
 
-def have_library_empty(lib, headers = nil, opt = "", &b)
+def try_library(libs, opt = "", &b)
+  if opt and !opt.empty?
+    [[:to_str], [:join, " "], [:to_s]].each do |meth, *args|
+      if opt.respond_to?(meth)
+        break opt = opt.send(meth, *args)
+      end
+    end
+    opt = "#{opt} #{libs}"
+  else
+    opt = libs
+  end
+  try_link(MAIN_DOES_NOTHING, opt, &b)
+end
+
+def have_library_empty(lib, opt = "", &b)
   lib = with_config(lib+'lib', lib)
   checking_for LIBARG%lib do
     if COMMON_LIBS.include?(lib)
       true
     else
       libs = append_library($libs, lib)
-      if try_link(MAIN_DOES_NOTHING)
+      if try_library(libs, opt, &b)
         $libs = libs
         true
       else
