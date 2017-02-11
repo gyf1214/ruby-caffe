@@ -14,19 +14,14 @@ $libs = ''
 
 $defs.push '-DCPU_ONLY' unless enable_config 'gpu', true
 
-blas_header = 'cblas.h'
-
-if enable_config 'mkl', false
-  blas_header = 'mkl.h'
+unless have_header 'cblas.h'
   $defs.push '-DUSE_MKL'
-end
-
-unless have_header blas_header
-  puts 'blas header not found.'
-  puts 'use build flag "--with-blas-dir=/path/to/blas" to specify the blas path.'
-  puts 'or use "--with-blas-include" to specify the include path.'
-  puts 'if you are using Intel MKL, use flag "--enable-mkl".'
-  raise
+  unless have_header 'mkl.h'
+    puts 'blas header not found.'
+    puts 'use build flag "--with-blas-dir=/path/to/blas" to specify the blas path.'
+    puts 'or use "--with-blas-include" to specify the include path.'
+    raise
+  end
 end
 
 unless have_library_empty('caffe') && have_header_cxx('caffe/caffe.hpp')
