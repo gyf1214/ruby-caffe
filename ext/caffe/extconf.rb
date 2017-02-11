@@ -14,9 +14,11 @@ $libs = ''
 
 $defs.push '-DCPU_ONLY' unless enable_config 'gpu', true
 
-if !have_header('cblas.h') || enable_config('mkl', false)
+mkl = enable_config 'mkl', nil
+
+if mkl == true || !have_header('cblas.h')
   $defs.push '-DUSE_MKL'
-  unless have_header 'mkl.h'
+  if mkl == false || !have_header 'mkl.h'
     puts 'blas header not found.'
     puts 'use build flag "--with-blas-dir=/path/to/blas" to specify the blas path.'
     puts 'or use "--with-blas-include" to specify the include path.'
