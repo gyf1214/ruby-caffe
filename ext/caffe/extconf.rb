@@ -14,7 +14,7 @@ $libs = ''
 
 $defs.push '-DCPU_ONLY' unless enable_config 'gpu', true
 
-unless have_header 'cblas.h'
+if !have_header('cblas.h') || enable_config('mkl', false)
   $defs.push '-DUSE_MKL'
   unless have_header 'mkl.h'
     puts 'blas header not found.'
