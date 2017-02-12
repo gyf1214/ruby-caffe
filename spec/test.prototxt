@@ -13,10 +13,10 @@ layer {
 }
 
 layer {
-    name: "ip"
+    name: "ip1"
     type: "InnerProduct"
     bottom: "data"
-    top: "ip"
+    top: "ip1"
     param {
         lr_mult: 1
     }
@@ -35,8 +35,37 @@ layer {
 }
 
 layer {
+    name: "sigmoid"
+    type: "Sigmoid"
+    bottom: "ip1"
+    top: "ip1"
+}
+
+layer {
+    name: "ip2"
+    type: "InnerProduct"
+    bottom: "ip1"
+    top: "ip2"
+    param {
+        lr_mult: 1
+    }
+    param {
+        lr_mult: 2
+    }
+    inner_product_param {
+        num_output: 2
+        weight_filler {
+            type: "gaussian"
+        }
+        bias_filler {
+            type: "constant"
+        }
+    }
+}
+
+layer {
     name: "prob"
     type: "Softmax"
-    bottom: "ip"
+    bottom: "ip2"
     top: "prob"
 }

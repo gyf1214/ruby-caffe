@@ -16,8 +16,19 @@ RSpec.describe Caffe::Net do
   end
 
   it 'can get blob by name' do
-    blob = @net.blob('ip')
+    blob = @net.blob('ip1')
     expect(blob).to be_a(Caffe::Blob)
     expect(blob.shape).to eq([1, 100])
+
+    blob = @net.blob('prob')
+    expect(blob.shape).to eq([1, 2])
+  end
+
+  it 'can get output' do
+    expect(@net.outputs).to be_an(Array)
+    expect(@net.outputs.size).to eq(1)
+    output = @net.outputs[0]
+    expect(output).to be_a(Caffe::Blob)
+    expect(output.shape).to eq([1, 2])
   end
 end
