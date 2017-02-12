@@ -1,5 +1,6 @@
 #include "net.hpp"
 #include "blob.hpp"
+#include "util.hpp"
 #include <rice/Data_Type.hpp>
 #include <rice/Constructor.hpp>
 #include <rice/Module.hpp>
@@ -11,7 +12,12 @@ using namespace Rice;
 static Array getInputs(Object self) {
     Net *net = from_ruby<Net *>(self);
     const std::vector<Blob *> &vec = net -> input_blobs();
-    return Array(vec.begin(), vec.end());
+    Array ret;
+    int n = vec.size();
+    for (int i = 0; i < n; ++i) {
+        ret.push(objectNoGC(vec[i]));
+    }
+    return ret;
 }
 
 static Object getBlobByName(Object self, String name) {
@@ -19,7 +25,7 @@ static Object getBlobByName(Object self, String name) {
     Blob *blob = net -> blob_by_name(from_ruby<std::string>(name)).get();
 
     if (blob) {
-        return to_ruby(blob);
+        return objectNoGC(blob);
     } else {
         return Qnil;
     }
