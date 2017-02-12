@@ -7,7 +7,7 @@ RSpec.describe Caffe::Net do
     @net = Caffe::Net.new path, Caffe::TEST
   end
 
-  it 'can gets the input' do
+  it 'can get the input' do
     expect(@net.inputs).to be_an(Array)
     expect(@net.inputs.size).to eq(1)
     input = @net.inputs[0]

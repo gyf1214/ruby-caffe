@@ -12,12 +12,13 @@ using namespace Rice;
 static Array getInputs(Object self) {
     Net *net = from_ruby<Net *>(self);
     const std::vector<Blob *> &vec = net -> input_blobs();
-    Array ret;
-    int n = vec.size();
-    for (int i = 0; i < n; ++i) {
-        ret.push(objectNoGC(vec[i]));
-    }
-    return ret;
+    return mapArray(vec.begin(), vec.end(), objectNoGC<Blob>);
+}
+
+static Array getOutputs(Object self) {
+    Net *net = from_ruby<Net *>(self);
+    const std::vector<Blob *> &vec = net -> output_blobs();
+    return mapArray(vec.begin(), vec.end(), objectNoGC<Blob>);
 }
 
 static Object getBlobByName(Object self, String name) {
@@ -43,5 +44,6 @@ void Init_net() {
         .define_class<Net>("Net")
         .define_constructor(Constructor<Net, std::string, caffe::Phase>())
         .define_method("inputs", &getInputs)
+        .define_method("outputs", &getOutputs)
         .define_method("blob", &getBlobByName);
 }
