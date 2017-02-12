@@ -3,11 +3,20 @@ require_rel '../lib/caffe.rb'
 
 RSpec.describe Caffe::Blob do
   before :example do
-    @blob = Caffe::Blob.new 1, 2, 3, 4
+    @blob = Caffe::Blob.new [1, 2, 3, 4]
   end
 
   it 'returns its shape as an array' do
     expect(@blob.shape).to eq([1, 2, 3, 4])
+  end
+
+  it 'can only have at most 4 dimensions' do
+    expect { Caffe::Blob.new [1, 2, 3, 4, 5] }.to raise_error(ArgumentError)
+  end
+
+  it 'can have shape dimension other than 4' do
+    @blob = Caffe::Blob.new [1, 10]
+    expect(@blob[0][5]).to eq(0.0)
   end
 
   def getRandomIndices

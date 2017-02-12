@@ -12,12 +12,12 @@ RSpec.describe Caffe::Net do
     expect(@net.inputs.size).to eq(1)
     input = @net.inputs[0]
     expect(input).to be_a(Caffe::Blob)
-    expect(input.shape).to eq([1, 10, 1, 1])
+    expect(input.shape).to eq([1, 10])
   end
 
   it 'can get blob by name' do
     blob = @net.blob('ip')
     expect(blob).to be_a(Caffe::Blob)
-    expect(blob.shape).to eq([1, 100, 1, 1])
+    expect(blob.shape).to eq([1, 100])
   end
 end

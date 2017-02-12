@@ -8,8 +8,6 @@ layer {
         shape: {
             dim: 1
             dim: 10
-            dim: 1
-            dim: 1
         }
     }
 }

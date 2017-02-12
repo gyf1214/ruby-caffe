@@ -13,8 +13,8 @@ BlobCursor::BlobCursor(Object blob, bool diff) : diff(diff) {
 
 void BlobCursor::checkValid() const {
     int n = indices.size();
-    if (n > 4) throw std::logic_error("Invalid BlobCursor!");
     const std::vector<int> &shape = ref -> shape();
+    if (n > shape.size()) throw std::logic_error("Invalid BlobCursor!");
     for (int i = 0; i < n; ++i) {
         if (shape[i] <= indices[i]) {
             throw std::out_of_range("Index out of range!");
@@ -31,7 +31,7 @@ BlobCursor BlobCursor::next(int index) const {
 
 Object BlobCursor::get(int index) const {
     BlobCursor next = this -> next(index);
-    if (next.indices.size() == 4) {
+    if (next.indices.size() == ref -> shape().size()) {
         return to_ruby(*next.begin());
     } else {
         return to_ruby(next);
@@ -40,7 +40,7 @@ Object BlobCursor::get(int index) const {
 
 Object BlobCursor::set(int index, Object data) {
     BlobCursor next = this -> next(index);
-    if (next.indices.size() == 4) {
+    if (next.indices.size() == ref -> shape().size()) {
         *next.mbegin() = from_ruby<float>(data);
         return data;
     } else {
@@ -50,7 +50,7 @@ Object BlobCursor::set(int index, Object data) {
 
 const float *BlobCursor::begin() {
     std::vector<int> full = indices;
-    full.resize(4);
+    full.resize(ref -> shape().size());
     const float *base = diff ? ref -> cpu_diff() : ref -> cpu_data();
 
     return base + ref -> offset(full);
@@ -62,7 +62,7 @@ const float *BlobCursor::end() {
 
 float *BlobCursor::mbegin() {
     std::vector<int> full = indices;
-    full.resize(4);
+    full.resize(ref -> shape().size());
     float *base = diff ? ref -> mutable_cpu_diff() : ref -> mutable_cpu_data();
 
     return base + ref -> offset(full);
@@ -104,12 +104,26 @@ static Array getBlobShape(Object self) {
     return Array(shape.begin(), shape.end());
 }
 
+struct BlobConstructor {
+    static void construct(Object self, Array shape) {
+        int n = shape.size();
+        if (n > 4) {
+            throw std::invalid_argument("Shape dimension exceeds 4!");
+        }
+        std::vector<int> vec(n);
+        for (int i = 0; i < n; ++i) {
+            vec[i] = from_ruby<int>(shape[i]);
+        }
+        DATA_PTR(self.value()) = new Blob(vec);
+    }
+};
+
 void Init_blob() {
     Module rb_mCaffe = define_module("Caffe");
 
     Data_Type<Blob> rb_cBlob = rb_mCaffe
         .define_class<Blob>("Blob")
-        .define_constructor(Constructor<Blob, int, int, int, int>())
+        .define_constructor(BlobConstructor())
         .define_method("data", getBlobData)
         .define_method("diff", getBlobDiff)
         .define_method("shape", getBlobShape);
