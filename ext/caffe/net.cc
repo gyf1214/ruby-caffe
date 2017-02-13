@@ -45,5 +45,6 @@ void Init_net() {
         .define_constructor(Constructor<Net, std::string, caffe::Phase>())
         .define_method("inputs", &getInputs)
         .define_method("outputs", &getOutputs)
-        .define_method("blob", &getBlobByName);
+        .define_method("blob", &getBlobByName)
+        .define_method("reshape", &Net::Reshape);
 }
