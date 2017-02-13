@@ -3,6 +3,7 @@
 
 #include <rice/Data_Type.hpp>
 #include <rice/Array.hpp>
+#include <vector>
 
 template<typename T>
 struct EmptyFreeFunction {
@@ -21,6 +22,16 @@ Rice::Array mapArray(Iter begin, Iter end, Func func) {
     Rice::Array ret;
     for (; begin != end; ++begin) {
         ret.push(to_ruby(func(*begin)));
+    }
+    return ret;
+}
+
+template<typename T>
+std::vector<T> arrayToVector(Rice::Array arr) {
+    int n = arr.size();
+    std::vector<T> ret(n);
+    for (int i = 0; i < n; ++i) {
+        ret[i] = from_ruby<T>(arr[i]);
     }
     return ret;
 }

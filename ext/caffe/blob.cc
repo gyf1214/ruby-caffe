@@ -1,4 +1,5 @@
 #include "blob.hpp"
+#include "util.hpp"
 #include <rice/Data_Type.hpp>
 #include <rice/Constructor.hpp>
 #include <rice/Module.hpp>
@@ -104,17 +105,21 @@ static Array getBlobShape(Object self) {
     return Array(shape.begin(), shape.end());
 }
 
+static Array setBlobShape(Object self, Array shape) {
+    if (shape.size() > 4) {
+        throw std::invalid_argument("Shape dimension exceeds 4!");
+    }
+    Blob *blob = from_ruby<Blob *>(self);
+    blob -> Reshape(arrayToVector<int>(shape));
+    return shape;
+}
+
 struct BlobConstructor {
     static void construct(Object self, Array shape) {
-        int n = shape.size();
-        if (n > 4) {
+        if (shape.size() > 4) {
             throw std::invalid_argument("Shape dimension exceeds 4!");
         }
-        std::vector<int> vec(n);
-        for (int i = 0; i < n; ++i) {
-            vec[i] = from_ruby<int>(shape[i]);
-        }
-        DATA_PTR(self.value()) = new Blob(vec);
+        DATA_PTR(self.value()) = new Blob(arrayToVector<int>(shape));
     }
 };
 
@@ -126,7 +131,8 @@ void Init_blob() {
         .define_constructor(BlobConstructor())
         .define_method("data", getBlobData)
         .define_method("diff", getBlobDiff)
-        .define_method("shape", getBlobShape);
+        .define_method("shape", getBlobShape)
+        .define_method("shape=", setBlobShape);
 
     Data_Type<BlobCursor> rb_cCursor = rb_cBlob
         .define_class<BlobCursor>("Cursor")

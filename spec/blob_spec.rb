@@ -19,6 +19,11 @@ RSpec.describe Caffe::Blob do
     expect(@blob[0][5]).to eq(0.0)
   end
 
+  it 'can reshape' do
+    @blob.shape = [1, 2, 2, 2]
+    expect(@blob.shape).to eq([1, 2, 2, 2])
+  end
+
   def getRandomIndices
     @blob.shape.map do |x|
       Random.rand x
