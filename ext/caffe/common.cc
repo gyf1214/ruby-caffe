@@ -9,7 +9,7 @@ using namespace Rice;
 void Init_common() {
     Module rb_mCaffe = define_module("Caffe");
 
-    Data_Type<caffe::Phase> rb_ePhase =
+    Enum<caffe::Phase> rb_ePhase =
          define_enum<caffe::Phase>("Phase", rb_mCaffe)
         .define_value("TRAIN", caffe::TRAIN)
         .define_value("TEST", caffe::TEST);
