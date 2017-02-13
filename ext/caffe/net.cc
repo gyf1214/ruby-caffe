@@ -35,11 +35,6 @@ static Object getBlobByName(Object self, String name) {
 void Init_net() {
     Module rb_mCaffe = define_module("Caffe");
 
-    Data_Type<caffe::Phase> rb_cPhase = rb_mCaffe
-        .define_class<caffe::Phase>("Phase");
-    rb_mCaffe.const_set("TRAIN", to_ruby(caffe::TRAIN))
-             .const_set("TEST", to_ruby(caffe::TEST));
-
     Data_Type<Net> rb_cNet = rb_mCaffe
         .define_class<Net>("Net")
         .define_constructor(Constructor<Net, std::string, caffe::Phase>())
