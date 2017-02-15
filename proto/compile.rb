@@ -3,6 +3,8 @@ require 'protobuf'
 require 'protobuf/descriptors'
 require 'protobuf/code_generator'
 
+ENV['PB_NO_TAG_WARNINGS'] = '1'
+
 caffe ||= ENV['CAFFE']
 caffe ||= '.'
 
