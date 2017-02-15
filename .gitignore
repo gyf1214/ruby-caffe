@@ -3,3 +3,4 @@ tmp/
 *.bundle
 caffe.proto
 *.pb.rb
+test_data

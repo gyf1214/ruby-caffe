@@ -1,0 +1,83 @@
+name: "test"
+
+layer {
+    name: "data"
+    type: "Data"
+    top: "data"
+    top: "label"
+    data_param {
+        source: "test_data"
+        batch_size: 256
+        backend: LMDB
+    }
+}
+
+layer {
+    name: "ip1"
+    type: "InnerProduct"
+    bottom: "data"
+    top: "ip1"
+    param {
+        lr_mult: 1
+    }
+    param {
+        lr_mult: 2
+    }
+    inner_product_param {
+        num_output: 100
+        weight_filler {
+            type: "gaussian"
+        }
+        bias_filler {
+            type: "constant"
+        }
+    }
+}
+
+layer {
+    name: "sigmoid"
+    type: "Sigmoid"
+    bottom: "ip1"
+    top: "ip1"
+}
+
+layer {
+    name: "ip2"
+    type: "InnerProduct"
+    bottom: "ip1"
+    top: "ip2"
+    param {
+        lr_mult: 1
+    }
+    param {
+        lr_mult: 2
+    }
+    inner_product_param {
+        num_output: 2
+        weight_filler {
+            type: "gaussian"
+        }
+        bias_filler {
+            type: "constant"
+        }
+    }
+}
+
+layer {
+    name: "accuracy"
+    type: "Accuracy"
+    bottom: "ip2"
+    bottom: "label"
+    top: "accuracy"
+    include {
+        phase: TEST
+    }
+}
+
+layer {
+    name: "loss"
+    type: "SoftmaxWithLoss"
+    bottom: "ip2"
+    bottom: "label"
+    top: "loss"
+}
