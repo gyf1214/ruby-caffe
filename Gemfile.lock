@@ -20,7 +20,6 @@ GEM
     rake (12.0.0)
     rake-compiler (1.0.3)
       rake
-    require_all (1.4.0)
     rice (2.1.1)
     rspec (3.5.0)
       rspec-core (~> 3.5.0)
@@ -47,7 +46,6 @@ DEPENDENCIES
   lmdb
   protobuf
   rake-compiler
-  require_all
   rice
   rspec
 
