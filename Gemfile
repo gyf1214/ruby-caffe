@@ -1,7 +1,6 @@
 source 'https://rubygems.org'
 
 gem 'rice'
-gem 'require_all'
 gem 'protobuf'
 gem 'lmdb'
 

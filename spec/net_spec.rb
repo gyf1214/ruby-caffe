@@ -1,8 +1,6 @@
-require 'require_all'
-require_rel '../lib/caffe.rb'
-
 RSpec.describe Caffe::Net do
   before :example do
+    Caffe.mode = Caffe::CPU
     path = File.expand_path '../net/test.prototxt', __FILE__
     @net = Caffe::Net.new path, Caffe::TEST
   end
@@ -35,7 +33,30 @@ RSpec.describe Caffe::Net do
   it 'can reshape according to the input size' do
     input = @net.inputs[0]
     input.shape = [64, 32]
-    @net.reshape
+    @net.reshape!
     expect(@net.outputs[0].shape).to eq([64, 2])
+  end
+
+  context 'trained net' do
+    before :example do
+      path = File.expand_path '../net/test.caffemodel', __FILE__
+      @net.load_trained! path
+    end
+
+    it 'can read from trained model' do
+      input = @net.inputs[0]
+      expect(input.shape).to eq([1, 32]);
+    end
+
+    it 'can forward' do
+      data = Array.new 32 do
+        Random.rand 2
+      end
+      input = @net.inputs[0]
+      input.copy_from! data
+      expect(@net.forward!).to eq(0.0)
+      output = @net.outputs[0]
+      expect(output[0][0] + output[0][1]).to eq(1.0)
+    end
   end
 end

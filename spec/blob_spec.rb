@@ -1,6 +1,3 @@
-require 'require_all'
-require_rel '../lib/caffe.rb'
-
 RSpec.describe Caffe::Blob do
   before :example do
     @blob = Caffe::Blob.new [1, 2, 3, 4]
@@ -76,7 +73,7 @@ RSpec.describe Caffe::Blob do
       arr = Array.new @data.size do
         Random.rand 2
       end
-      @data.copy arr
+      @data.copy_from! arr
       expect(@data.to_a).to eq(arr)
     end
   end

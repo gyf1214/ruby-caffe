@@ -1,5 +1,4 @@
-require 'require_all'
-require_rel './mkmf-cxx'
+require File.expand_path '../mkmf-cxx', __FILE__
 
 @libdir_basename = 'lib'
 

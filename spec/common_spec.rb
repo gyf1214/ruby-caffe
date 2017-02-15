@@ -1,6 +1,3 @@
-require 'require_all'
-require_rel '../lib/caffe.rb'
-
 RSpec.describe Caffe do
   it 'contains constant shortcuts of enum' do
     expect(Caffe::TRAIN).to eq(Caffe::Phase::TRAIN)
