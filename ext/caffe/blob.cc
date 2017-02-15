@@ -141,5 +141,5 @@ void Init_blob() {
         .define_method("[]=", &BlobCursor::set)
         .define_method("size", &BlobCursor::count)
         .define_iterator(&BlobCursor::begin, &BlobCursor::end)
-        .define_method("copy", &BlobCursor::copy);
+        .define_method("copy_from!", &BlobCursor::copy);
 }

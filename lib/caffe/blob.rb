@@ -18,8 +18,8 @@ module Caffe
       data.size
     end
 
-    def copy x
-      data.copy x
+    def copy_from! x
+      data.copy_from! x
     end
 
     def each &blk

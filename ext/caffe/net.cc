@@ -33,6 +33,13 @@ static Object getBlobByName(Object self, String name) {
     }
 }
 
+static Object forward(Object self) {
+    Net *net = from_ruby<Net *>(self);
+    float loss = .0;
+    net -> Forward(NULL);
+    return to_ruby(loss);
+}
+
 void Init_net() {
     Module rb_mCaffe = define_module("Caffe");
 
@@ -42,5 +49,7 @@ void Init_net() {
         .define_method("inputs", &getInputs)
         .define_method("outputs", &getOutputs)
         .define_method("blob", &getBlobByName)
-        .define_method("reshape", &Net::Reshape);
+        .define_method("reshape!", &Net::Reshape)
+        .define_method("load_trained!", &Net::CopyTrainedLayersFromBinaryProto)
+        .define_method("forward!", &forward);
 }
