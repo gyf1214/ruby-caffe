@@ -54,9 +54,18 @@ RSpec.describe Caffe::Net do
       end
       input = @net.inputs[0]
       input.copy_from! data
+
       expect(@net.forward!).to eq(0.0)
       output = @net.outputs[0]
       expect(output[0][0] + output[0][1]).to be_within(1e-6).of(1.0)
+
+      label = output[0][1] > output[0][0] ? 1 : 0
+      num = data.inject(0) do |i, x|
+        2 * i + x
+      end
+      expected = (num % 1024 > 1024 / 2) ? 1 : 0
+
+      expect(label).to eq(expected)
     end
   end
 end

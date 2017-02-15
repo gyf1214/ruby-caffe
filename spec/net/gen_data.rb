@@ -1,6 +1,7 @@
-require 'require_all'
+$LOAD_PATH << File.expand_path('../../../lib', __FILE__)
+
 require 'lmdb'
-require_rel '../../lib/caffe.rb'
+require 'caffe'
 
 def gen
   data = Array.new 32 do
@@ -11,7 +12,7 @@ def gen
     i = 2 * i + x
   end
 
-  label = ((num * num) % 1024 > 1024 / 2) ? 1 : 0
+  label = (num % 1024 > 1024 / 2) ? 1 : 0
 
   datum = Caffe::Datum.new channels: 32, height: 1, width: 1, label: label
   datum.data = data.pack 'C*'
