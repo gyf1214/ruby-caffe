@@ -1,3 +1,5 @@
 tmp/
 .clang_complete
 *.bundle
+caffe.proto
+*.pb.rb

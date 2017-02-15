@@ -1,4 +1,5 @@
 #include "net.hpp"
+#include "common.hpp"
 #include "blob.hpp"
 #include "util.hpp"
 #include <rice/Data_Type.hpp>

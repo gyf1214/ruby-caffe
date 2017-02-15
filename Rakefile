@@ -8,4 +8,10 @@ end
 
 RSpec::Core::RakeTask.new :spec
 
-task :test => [:compile, :spec]
+task :proto, [:caffe] do |t, args|
+  ENV['CAFFE'] = args.caffe unless args.caffe.nil?
+  ruby "proto/compile.rb"
+end
+
+task :build => [:proto, :compile]
+task :test => [:build, :spec]
