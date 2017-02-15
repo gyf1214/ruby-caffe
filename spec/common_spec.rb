@@ -5,8 +5,8 @@ RSpec.describe Caffe do
   it 'contains constant shortcuts of enum' do
     expect(Caffe::TRAIN).to eq(Caffe::Phase::TRAIN)
     expect(Caffe::TEST).to eq(Caffe::Phase::TEST)
-    expect(Caffe::CPU).to eq(Caffe::Brew::CPU)
-    expect(Caffe::GPU).to eq(Caffe::Brew::GPU)
+    expect(Caffe::CPU).to eq(Caffe::SolverParameter::SolverMode::CPU)
+    expect(Caffe::GPU).to eq(Caffe::SolverParameter::SolverMode::GPU)
   end
 
   it 'can change mode' do
