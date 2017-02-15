@@ -56,7 +56,7 @@ RSpec.describe Caffe::Net do
       input.copy_from! data
       expect(@net.forward!).to eq(0.0)
       output = @net.outputs[0]
-      expect(output[0][0] + output[0][1]).to eq(1.0)
+      expect(output[0][0] + output[0][1]).to be_within(1e-6).of(1.0)
     end
   end
 end
