@@ -12,7 +12,7 @@ RSpec.describe Caffe::Net do
     expect(@net.inputs.size).to eq(1)
     input = @net.inputs[0]
     expect(input).to be_a(Caffe::Blob)
-    expect(input.shape).to eq([1, 10])
+    expect(input.shape).to eq([1, 32])
   end
 
   it 'can get blob by name' do
@@ -34,7 +34,7 @@ RSpec.describe Caffe::Net do
 
   it 'can reshape according to the input size' do
     input = @net.inputs[0]
-    input.shape = [64, 10]
+    input.shape = [64, 32]
     @net.reshape
     expect(@net.outputs[0].shape).to eq([64, 2])
   end
