@@ -3,7 +3,7 @@ require_rel '../lib/caffe.rb'
 
 RSpec.describe Caffe::Net do
   before :example do
-    path = File.expand_path '../test.prototxt', __FILE__
+    path = File.expand_path '../net/test.prototxt', __FILE__
     @net = Caffe::Net.new path, Caffe::TEST
   end
 
