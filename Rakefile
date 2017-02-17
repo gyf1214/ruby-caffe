@@ -18,8 +18,7 @@ task :proto, [:caffe] do |_, args|
   ruby 'proto/compile.rb'
 end
 
-desc 'build proto & compile extension'
-task build: [:proto, :compile]
-
 desc 'test the gem'
-task test: [:rubocop, :build, :spec]
+task test: [:rubocop, :proto, :compile, :spec]
+
+task build: [:test]
