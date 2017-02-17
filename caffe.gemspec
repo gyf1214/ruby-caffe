@@ -17,9 +17,7 @@ Gem::Specification.new do |s|
 
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split "\n"
   s.files         = Dir['ext/**/*.*'] + Dir['lib/**/*.rb'] +
-                    %w(Rakefile Gemfile caffe.gemspec) +
-                    %w(.gitignore .rspec .rubocop.yml) +
-                    s.test_files + s.extra_rdoc_files
+                    s.extra_rdoc_files
   s.require_paths = ['lib']
   s.extensions   += Dir['ext/**/extconf.rb']
 

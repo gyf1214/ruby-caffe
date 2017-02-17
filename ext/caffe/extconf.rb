@@ -36,4 +36,4 @@ MSG
   raise
 end
 
-create_makefile 'caffe'
+create_makefile 'caffe/caffe'
