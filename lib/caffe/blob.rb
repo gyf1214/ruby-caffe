@@ -1,16 +1,18 @@
 module Caffe
+  # Wrapper class for caffe::Blob<float>
   class Blob
+    # Proxy class to access caffe::Blob<float> like Array / Enumerable
     class Cursor
       include Enumerable
 
       alias count size
     end
 
-    def [] index
+    def [](index)
       data[index]
     end
 
-    def []= index, x
+    def []=(index, x)
       data[index] = x
     end
 
@@ -18,12 +20,12 @@ module Caffe
       data.size
     end
 
-    def copy_from! x
+    def copy_from!(x)
       data.copy_from! x
     end
 
-    def each &blk
-      data.each &blk
+    def each(&blk)
+      data.each(&blk)
     end
 
     include Enumerable

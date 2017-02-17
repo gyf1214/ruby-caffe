@@ -21,7 +21,7 @@ RSpec.describe Caffe::Blob do
     expect(@blob.shape).to eq([1, 2, 2, 2])
   end
 
-  def getRandomIndices
+  def random_indices
     @blob.shape.map do |x|
       Random.rand x
     end
@@ -29,7 +29,7 @@ RSpec.describe Caffe::Blob do
 
   shared_examples :memory do
     it 'can access to next dimension via []' do
-      indices = getRandomIndices
+      indices = random_indices
       3.times do |i|
         @data = @data[indices[i]]
         expect(@data).to be_a(Caffe::Blob::Cursor)
@@ -37,18 +37,18 @@ RSpec.describe Caffe::Blob do
     end
 
     it 'can be read via []' do
-      i, j, k, l = getRandomIndices
+      i, j, k, l = random_indices
       expect(@data[i][j][k][l]).to eq(0.0)
     end
 
     it 'can be write via []=' do
-      i, j, k, l = getRandomIndices
+      i, j, k, l = random_indices
       @data[i][j][k][l] = 1.0
       expect(@data[i][j][k][l]).to eq(1.0)
     end
 
     it 'returns the size of its memory' do
-      i, j = getRandomIndices
+      i, j = random_indices
       expect(@data.size).to eq(1 * 2 * 3 * 4)
       expect(@data[i][j].size).to eq(3 * 4)
     end
@@ -59,7 +59,7 @@ RSpec.describe Caffe::Blob do
     end
 
     it 'can be enumerated' do
-      i, j, k, l = getRandomIndices
+      i, j = random_indices
 
       @data[i].each do |x|
         expect(x).to be(0.0)

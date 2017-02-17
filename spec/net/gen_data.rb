@@ -9,10 +9,10 @@ def gen
   end
 
   num = data.inject(0) do |i, x|
-    i = 2 * i + x
+    2 * i + x
   end
 
-  label = (num % 1024 > 1024 / 2) ? 1 : 0
+  label = num % 1024 > 1024 / 2 ? 1 : 0
 
   datum = Caffe::Datum.new channels: 32, height: 1, width: 1, label: label
   datum.data = data.pack 'C*'
@@ -25,5 +25,5 @@ env.mapsize = 1 * 1024 * 1024 * 1024
 db = env.database
 
 25600.times do |i|
-  db['%08d' % i] = gen
+  db[format('%08d', i)] = gen
 end

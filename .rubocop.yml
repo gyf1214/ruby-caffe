@@ -1,0 +1,15 @@
+Style/GlobalVars:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
+Style/NumericLiterals:
+  Enabled: false
+
+AllCops:
+  Exclude:
+    - '**/*.pb.rb'

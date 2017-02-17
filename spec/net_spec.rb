@@ -45,7 +45,7 @@ RSpec.describe Caffe::Net do
 
     it 'can read from trained model' do
       input = @net.inputs[0]
-      expect(input.shape).to eq([1, 32]);
+      expect(input.shape).to eq([1, 32])
     end
 
     it 'can forward' do
@@ -63,7 +63,7 @@ RSpec.describe Caffe::Net do
       num = data.inject(0) do |i, x|
         2 * i + x
       end
-      expected = (num % 1024 > 1024 / 2) ? 1 : 0
+      expected = num % 1024 > 1024 / 2 ? 1 : 0
 
       expect(label).to eq(expected)
     end
