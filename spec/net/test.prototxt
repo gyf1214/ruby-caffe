@@ -13,6 +13,21 @@ layer {
 }
 
 layer {
+    name: "label"
+    type: "Input"
+    top: "label"
+    include {
+        phase: TRAIN
+    }
+    input_param {
+        shape: {
+            dim: 1
+            dim: 1
+        }
+    }
+}
+
+layer {
     name: "ip1"
     type: "InnerProduct"
     bottom: "data"
@@ -68,4 +83,18 @@ layer {
     type: "Softmax"
     bottom: "ip2"
     top: "prob"
+    include {
+        phase: TEST
+    }
+}
+
+layer {
+    name: "loss"
+    type: "SoftmaxWithLoss"
+    bottom: "ip2"
+    bottom: "label"
+    top: "loss"
+    include {
+        phase: TRAIN
+    }
 }

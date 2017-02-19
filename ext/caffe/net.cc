@@ -51,5 +51,7 @@ void Init_net() {
         .define_method("blob", &getBlobByName)
         .define_method("reshape!", &Net::Reshape)
         .define_method("load_trained!", &Net::CopyTrainedLayersFromBinaryProto)
-        .define_method("forward!", &forward);
+        .define_method("forward!", &forward)
+        .define_method("forward_backward!", &Net::ForwardBackward)
+        .define_method("share_trained!", &Net::ShareTrainedLayersWith);
 }
