@@ -6,7 +6,7 @@ layer {
     top: "data"
     top: "label"
     data_param {
-        source: "test_data"
+        source: "spec/net/test_data"
         batch_size: 256
         backend: LMDB
     }

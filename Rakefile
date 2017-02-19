@@ -18,6 +18,26 @@ task :proto, [:caffe] do |_, args|
   ruby 'proto/compile.rb'
 end
 
+net = 'spec/net'
+test_data = "#{net}/test_data"
+test_solver = "#{net}/test_solver.prototxt"
+gen_data = "#{net}/gen_data.rb"
+model = "#{net}/test.caffemodel"
+
+directory test_data
+file test_data do
+  ruby gen_data
+end
+
+file model => test_data do
+  sh "caffe train -solver #{test_solver}"
+  src = Dir["#{net}/*_*.caffemodel"][0]
+  mv src, model
+  rm Dir["#{net}/*.solverstate"]
+end
+
+task spec: [model]
+
 desc 'test the gem'
 task test: [:rubocop, :proto, :compile, :spec]
 

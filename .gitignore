@@ -6,3 +6,5 @@ caffe.proto
 *.pb.rb
 test_data
 Gemfile.lock
+*.caffemodel
+*.solverstate
