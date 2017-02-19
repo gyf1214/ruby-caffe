@@ -36,7 +36,7 @@ static Object getBlobByName(Object self, String name) {
 static Object forward(Object self) {
     Net *net = from_ruby<Net *>(self);
     float loss = .0;
-    net -> Forward(NULL);
+    net -> Forward(&loss);
     return to_ruby(loss);
 }
 
