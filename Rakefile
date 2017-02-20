@@ -45,11 +45,11 @@ namespace :build do
   task model: [model]
 
   desc 'build all prerequisites for gem & test'
-  task pre: [:proto, :compile, model]
+  task pre: [:proto, :model]
 end
 
 desc 'test the gem'
-task test: [:rubocop, 'build:pre', :spec]
+task test: [:rubocop, 'build:pre', :compile, :spec]
 
 task build: [:test]
 
