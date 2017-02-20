@@ -45,21 +45,20 @@ Build flags can be passed to `extconf.rb` to specify the `caffe` path and other 
 
 If `rake` is used to build the extension, use:
 
-```shell
+```
 $ rake compile -- <build flags>
 ```
 
 If installing from `gem`, use:
 
-```shell
+```
 $ gem install caffe -- <build flags>
 ```
 
 If installing from `bundler`, use:
 
-```shell
+```
 $ bundle config build.caffe <build flags>
-
 $ bundle install
 ```
 
@@ -67,39 +66,108 @@ $ bundle install
 
 If you put all the headers and libs required in default search path (like `/usr/local` & `/usr`), and use the default setting (with GPU mode) then everything should be ok
 
-## Build ##
+## Installation ##
 
-Now the project is not a gem project, so it can be built by `rake`
+```
+$ gem install caffe -- <build flags>
+```
 
-First, use `bundler` to install all the dependencies:
+Using bundler:
 
-```shell
+```
+$ bundle config build.caffe <build flags>
 $ bundle install
 ```
 
-Then, use `rake` to build:
+Require everything with:
 
-```shell
+```ruby
+require 'caffe'
+```
+
+## Development ##
+
+First clone this repository:
+
+```
+$ git clone git://github.com/gyf1214/ruby-caffe
+```
+
+Then build all prerequisites for gem & test (proto files & test net):
+
+```
+$ rake build:pre
+```
+
+When building proto files, the caffe path (which contains `proto/caffe.proto`) can be specified by `ENV['CAFFE']`, i.e.
+
+```
+$ CAFFE=/path/to/caffe rake build:pre
+```
+
+Or by default the path is `.`, so you can just copy / link your `caffe.proto` to `proto/`
+
+Compile C++ extension with:
+
+```
 $ rake compile -- <build flags>
 ```
 
-Test with:
+Build flags & other methods to link caffe are described above
 
-```shell
+Test the code with (which include the rubocop code style check):
+
+```
 $ rake test
 ```
 
-or after compilation:
+Build the gem with:
 
-```shell
+```
+$ rake build
+```
+
+Which will run all tests and build the gem in `pkg/caffe-<version>.gem`
+
+Install the gem locally with:
+
+```
+$ rake install
+```
+
+### Other rake tasks ###
+
+```
+$ rake rubocop
+```
+
+Run the rubocop code style check, you can also run auto correct with `rake rubocop:auto_correct`
+
+```
 $ rake spec
 ```
 
-require the lib with:
+Run rspec only, without checking the dependencies, note that `build:pre` & `compile` must be completed before
 
-```ruby
-require './lib/caffe'
 ```
+$ rake build:proto
+$ rake build:test
+```
+
+The two tasks build the proto file and trained model for testing respectively. `ENV['CAFFE']` can be specified when building proto
+
+```
+$ rake clean
+$ rake clobber
+```
+
+The first cleans the temporary files and the second cleans all generated files
+
+```
+$ rake release[remote]
+```
+
+Create a version tag, and push to both git remote & <rubygems.org>
 
 ## Author ##
 
