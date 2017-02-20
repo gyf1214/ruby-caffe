@@ -40,6 +40,11 @@ static void restore(Object self, String path) {
     solver -> Restore(path.c_str());
 }
 
+static void solve(Object self) {
+    Solver *solver = from_ruby<Solver *>(self);
+    solver -> Solve(NULL);
+}
+
 void Init_solver() {
     Module rb_mCaffe = define_module("Caffe");
 
@@ -51,5 +56,6 @@ void Init_solver() {
         .define_method("iter", &Solver::iter)
         .define_method("step!", &Solver::Step)
         .define_method("snapshot", &Solver::Snapshot)
-        .define_method("restore!", restore);
+        .define_method("restore!", restore)
+        .define_method("solve!", solve);
 }

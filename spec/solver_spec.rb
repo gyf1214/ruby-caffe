@@ -32,16 +32,33 @@ RSpec.describe Caffe::Solver do
     expect(net.forward!).to be < loss
   end
 
-  it '#snapshot & #restore! can save & load the current state' do
+  def snapshot_path
     state = File.expand_path "../net/test_iter_#{@solver.iter}.solverstate",
                              __FILE__
     model = File.expand_path "../net/test_iter_#{@solver.iter}.caffemodel",
                              __FILE__
+    [state, model]
+  end
+
+  it '#snapshot & #restore! can save & load the current state' do
+    state, model = snapshot_path
     begin
       @solver.snapshot
       expect(File.exist?(state)).to be true
       @solver.restore! state
     ensure
+      File.unlink state
+      File.unlink model
+    end
+  end
+
+  it '#solve! solves the net' do
+    begin
+      @solver.solve!
+      net = @solver.net
+      expect(net.forward!).to be_within(1e-2).of(0.0)
+    ensure
+      state, model = snapshot_path
       File.unlink state
       File.unlink model
     end
