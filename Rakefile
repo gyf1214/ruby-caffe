@@ -45,7 +45,7 @@ namespace :build do
   task test: [model]
 
   desc 'build all prerequisites for gem & test'
-  task pre: [:proto, :model]
+  task pre: [:proto, :test]
 end
 
 desc 'test the gem'
