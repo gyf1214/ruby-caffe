@@ -154,7 +154,7 @@ $ rake build:proto
 $ rake build:test
 ```
 
-The two tasks build the proto file and trained model for testing respectively. `ENV['CAFFE']` can be specified when building proto
+The two tasks build proto files and trained model for testing respectively. `ENV['CAFFE']` can be specified when building proto
 
 ```
 $ rake clean
@@ -167,7 +167,7 @@ The first cleans the temporary files and the second cleans all generated files
 $ rake release[remote]
 ```
 
-Create a version tag, and push to both git remote & <rubygems.org>
+Create a version tag, and push to both git remote & [rubygems.org](https://rubygems.org)
 
 ## Author ##
 
