@@ -1,6 +1,7 @@
 #ifndef __UTIL
 #define __UTIL
 
+#include <caffe/caffe.hpp>
 #include <rice/Data_Type.hpp>
 #include <rice/Array.hpp>
 #include <vector>
@@ -15,6 +16,11 @@ Rice::Data_Object<T> objectNoGC(T *obj) {
     return Rice::Data_Object<T>(obj, Rice::Data_Type<T>::klass(),
                                 Rice::Default_Mark_Function<T>::mark,
                                 EmptyFreeFunction<T>::free);
+}
+
+template<typename T, typename U>
+Rice::Data_Object<T> sharedToObj(U obj) {
+    return objectNoGC(obj.get());
 }
 
 template<typename Iter, typename Func>

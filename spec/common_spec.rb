@@ -22,5 +22,8 @@ RSpec.describe Caffe do
     expect(Caffe.solver_count).to eq(2)
     expect(Caffe.solver_rank).to eq(1)
     expect(Caffe.multiprocess).to eq(true)
+    Caffe.solver_count = 1
+    Caffe.solver_rank = 0
+    Caffe.multiprocess = false
   end
 end

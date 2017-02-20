@@ -2,6 +2,7 @@
 #include "common.hpp"
 #include "blob.hpp"
 #include "net.hpp"
+#include "solver.hpp"
 
 extern "C"
 void Init_caffe() {
@@ -10,4 +11,5 @@ void Init_caffe() {
     Init_common();
     Init_blob();
     Init_net();
+    Init_solver();
 }
