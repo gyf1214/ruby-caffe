@@ -12,10 +12,11 @@ RSpec::Core::RakeTask.new :spec
 
 RuboCop::RakeTask.new
 
-desc 'build .pb.rb from caffe proto'
-task :proto, [:caffe] do |_, args|
-  ENV['CAFFE'] = args.caffe unless args.caffe.nil?
-  ruby 'proto/compile.rb'
+proto = 'lib/caffe/caffe.pb.rb'
+compile = 'proto/compile.rb'
+
+file proto do
+  ruby compile
 end
 
 net = 'spec/net'
@@ -30,15 +31,29 @@ file test_data do
 end
 
 file model => test_data do
-  sh "caffe train -solver #{test_solver}"
+  sh "caffe train -solver #{test_solver} > /dev/null 2>&1"
   src = Dir["#{net}/*_*.caffemodel"][0]
   mv src, model
   rm Dir["#{net}/*.solverstate"]
 end
 
-task spec: [model]
+namespace :build do
+  desc 'build .pb.rb from caffe proto'
+  task proto: [proto]
+
+  desc 'build trained model for testing'
+  task model: [model]
+
+  desc 'build all prerequisites for gem & test'
+  task pre: [:proto, :compile, model]
+end
 
 desc 'test the gem'
-task test: [:rubocop, :proto, :compile, :spec]
+task test: [:rubocop, 'build:pre', :spec]
 
 task build: [:test]
+
+task :clobber do
+  sh "rm -fr #{test_data} #{model}", verbose: false
+  rm Dir[proto], verbose: false
+end
