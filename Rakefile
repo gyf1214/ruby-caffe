@@ -42,7 +42,7 @@ namespace :build do
   task proto: [proto]
 
   desc 'build trained model for testing'
-  task model: [model]
+  task test: [model]
 
   desc 'build all prerequisites for gem & test'
   task pre: [:proto, :model]
